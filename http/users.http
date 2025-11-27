@@ -3,15 +3,15 @@ POST http://localhost:8888/users
 Content-Type: application/json
 
 {
-  "username": "testuser4",
-  "email": "test4@test.test"
+  "username": "testuser2",
+  "email": "test2@test.test"
 }
 
 ### GET ALL USERS
 GET http://localhost:8888/users
 
 ### UPDATE USER
-PUT http://localhost:8888/users/1
+PUT http://localhost:8888/users/0
 Content-Type: application/json
 
 {

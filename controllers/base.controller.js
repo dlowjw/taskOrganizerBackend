@@ -3,19 +3,32 @@ const fs = require("fs");
 class BaseController {
   constructor(filename) {
     this.filename = filename;
-    this.read = () => {
-      return JSON.parse(fs.readFileSync(this.filename));
+    this.read = (req, res) => {
+      return res.send(JSON.parse(fs.readFileSync(this.filename)));
     };
-    this.write = (data) => {
-      return fs.writeFileSync(this.filename, JSON.stringify(data));
+    this.write = (req, res) => {
+      try {
+        const data = req.body;
+        // const read = this.read();
+        fs.writeFileSync(this.filename, JSON.stringify(data));
+
+        res.status(201).json({
+          msg: "data saved...",
+        });
+      } catch (error) {
+        res.status(500).send(error.toString());
+      }
     };
-    this.update = (id, data) => {
+    this.update = (req, res) => {
       const readData = this.read();
-      readData[id] = {
-        ...readData[id],
-        ...data,
+      readData[req.params.id] = {
+        ...readData[req.params.id],
+        ...req.body,
       };
-      return this.write(readData);
+      res.status(200).json({
+        msg: "data updated",
+        data: json[req.params.index],
+      });
     };
 
     this.delete = (id) => {
@@ -24,6 +37,10 @@ class BaseController {
       readData.splice(id, 1);
       return this.write(readData);
     };
+  }
+
+  test(req, res) {
+    res.send("ok");
   }
 }
 
